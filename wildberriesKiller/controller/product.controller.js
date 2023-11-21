@@ -28,18 +28,17 @@ async getProducts(req, res){
 
 async getOneProduct(req, res){
     try{
-     const product=await productService.getOneProduct(req.params.id) 
+     const product = await productService.getOneProduct(req.params.id) 
      return res.json(product.rows[0])
     } catch (e){
-        e.message="Failed to get the product"
         console.log(e)    
-        res.status(500).json(e.message)
+        res.status(e.code).json(e.message)
     }
 }
 
 async updateProduct(req, res){ 
     try{
-        const product=await productService.updateProduct(req.body)
+        const product = await productService.updateProduct(req.body)
         return res.json(product.rows[0])
     } catch (e){
         if (e.message==='id не указан'){
@@ -89,6 +88,5 @@ async savePicture(req, res){
 }
   */  
 }
-
 
 module.exports = new ProductController()

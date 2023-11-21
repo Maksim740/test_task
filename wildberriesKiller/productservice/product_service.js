@@ -1,6 +1,7 @@
 const contentDisposition = require('content-disposition')
 const fileService = require('../fileservice/fileservice')
 const db = require('../db/db')
+const error = require('../errorexception/errorexception.js')
     
 class ProductService {
     async createProduct(product){
@@ -19,10 +20,10 @@ class ProductService {
     
     async getOneProduct(id){ // тут тож проверку на айди навер и на пй не найден
         if(!id)
-            throw new Error ('id не указан')
+            throw new ErrorException ('id не указан', 404)
         const product = await db.query('select * from products where id = $1', [id])
         if(product.rowCount===0)
-            throw new Error ('Продукт по id не найден') 
+            throw new ErrorException ('Продукт по id не найден', 404)
         return product
     }
     
@@ -44,7 +45,6 @@ class ProductService {
         return product
     }
 }
-
 
 module.exports = new ProductService()
 
